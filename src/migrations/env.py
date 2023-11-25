@@ -7,10 +7,15 @@ from sqlalchemy import pool
 
 from alembic import context
 
+sys.path.insert(0, dirname(dirname(dirname(abspath(__file__)))))
+
 from src.config import settings
 from src.db import Base
+from src.books.models import BookModel
+from src.books.authors.models import AuthorModels
+from src.books.categorys.models import CategoryModel
 
-sys.path.insert(0, dirname(dirname(dirname(abspath(__file__)))))
+
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
