@@ -1,10 +1,14 @@
 from datetime import datetime
+from typing import TYPE_CHECKING
 
 from sqlalchemy import ForeignKey, Text
 from sqlalchemy.orm import Mapped, mapped_column, relationship
 
 from src.db import Base
 
+if TYPE_CHECKING:
+    from src.books.authors.models import AuthorModels
+    from src.books.categorys.models import CategoryModel
 
 class BookModel(Base):
     __tablename__ = "book"
