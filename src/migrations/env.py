@@ -11,9 +11,9 @@ sys.path.insert(0, dirname(dirname(dirname(abspath(__file__)))))
 
 from src.config import settings
 from src.db import Base
-from src.books.models import BookModel
-from src.books.authors.models import AuthorModels
-from src.books.categorys.models import CategoryModel
+from src.books.models import Book
+from src.books.authors.models import Author
+from src.books.categorys.models import Category
 
 
 

@@ -1,5 +1,3 @@
-from typing import Literal
-
 from pydantic import BaseModel, Field
 
 
@@ -13,4 +11,4 @@ class SBooks(BaseModel):
     number_page: int
     size: str
     cover_type: str
-    age_restrictions: Literal['0+']
+    age_restrictions: str = Field(default="0+")

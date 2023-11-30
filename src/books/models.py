@@ -7,15 +7,10 @@ from sqlalchemy.orm import Mapped, mapped_column, relationship
 from src.db import Base
 
 if TYPE_CHECKING:
-    from src.books.authors.models import AuthorModels
-    from src.books.categorys.models import CategoryModel
+    from src.books.categorys.models import Category
 
-class BookModel(Base):
-    __tablename__ = "book"
 
-    id: Mapped[int] = mapped_column(primary_key=True)
-    author_id = mapped_column(ForeignKey("author.id"))
-    category_id = mapped_column(ForeignKey("category.id"))
+class Book(Base):
     name: Mapped[str] = mapped_column(nullable=False)
     description: Mapped[str] = mapped_column(Text, nullable=True)
     year_publication: Mapped[int] = mapped_column(nullable=False)
@@ -25,9 +20,10 @@ class BookModel(Base):
     cover_type: Mapped[str] = mapped_column(nullable=False)
     age_restrictions: Mapped[str] = mapped_column(nullable=False)
     create_date: Mapped[datetime] = mapped_column(default=datetime.utcnow)
+    author_id: Mapped[int] = mapped_column(ForeignKey("authors.id"),)
+    category_id: Mapped[int] = mapped_column(ForeignKey("categorys.id"), )
 
-    category: Mapped[list["CategoryModel"]] = relationship(back_populates="book")
-    author: Mapped["AuthorModels"] = relationship(back_populates="book")
+    categorys: Mapped[list["Category"]] = relationship(back_populates="books")
 
     def __str__(self):
         return self.name
