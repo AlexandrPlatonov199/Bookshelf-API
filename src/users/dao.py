@@ -1,9 +1,4 @@
-from sqlalchemy import select, insert
-from fastapi.exceptions import HTTPException
-
 from src.dao.base_dao import BaseDAO
-from src.db import async_sessionmaker
-from src.users.auth import get_password_hash
 from src.users.models import User
 
 
