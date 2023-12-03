@@ -1,18 +1,19 @@
-from fastapi import APIRouter, Depends
-from sqlalchemy import insert
-from sqlalchemy.ext.asyncio import AsyncSession
+from fastapi import APIRouter
 
-from src.books.authors.models import Author
+from src.books.authors.dao import AuthorDAO
 from src.books.authors.shemas import SAuthors
-from src.db import get_async_session
+
 
 router = APIRouter(prefix="/author",
                    tags=["Authors"])
 
 
 @router.post("")
-async def add_author(author: SAuthors, session: AsyncSession = Depends(get_async_session)):
-    stmt = insert(Author).values(**author.model_dump())
-    await session.execute(stmt)
-    await session.commit()
+async def add_author(author: SAuthors):
+    await AuthorDAO.add(**author.model_dump())
     return {"message": "200"}
+
+
+@router.get("")
+async def get_all_author() -> list[SAuthors]:
+    return await AuthorDAO.find_all()
