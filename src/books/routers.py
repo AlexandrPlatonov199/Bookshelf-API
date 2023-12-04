@@ -1,4 +1,5 @@
-from fastapi import APIRouter, Request, Depends
+from fastapi import APIRouter, Depends
+from fastapi_cache.decorator import cache
 
 from src.books.dao import BookDAO
 from src.books.shemas import SBooks
@@ -17,6 +18,7 @@ async def add_book(book: SBooks, user: User = Depends(get_current_user)):
 
 
 @router.get("")
+@cache(expire=60)
 async def get_all_book() -> list[SBooks]:
     return await BookDAO.find_all()
 

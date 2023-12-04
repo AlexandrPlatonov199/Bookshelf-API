@@ -5,8 +5,14 @@ from src.admin_panel.views import BookAdmin, CategoryAdmin, AuthorAdmin, UserAdm
 from src.books.authors.routers import router as router_author
 from src.books.categorys.routers import router as router_category
 from src.books.routers import router as router_book
+from src.config import settings
 from src.users.routers import router as router_user
 from src.db import async_engine
+
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+
+from redis import asyncio as aioredis
 
 app = FastAPI(title="Bookshelf")
 
@@ -21,3 +27,10 @@ admin.add_view(BookAdmin)
 admin.add_view(CategoryAdmin)
 admin.add_view(AuthorAdmin)
 admin.add_view(UserAdmin)
+
+
+@app.on_event("startup")
+def startup():
+    redis = aioredis.from_url(f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}", encoding="utf8",
+                              decode_responses=True)
+    FastAPICache.init(RedisBackend(redis), prefix="cache")
