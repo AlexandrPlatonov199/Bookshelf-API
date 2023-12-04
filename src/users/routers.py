@@ -1,7 +1,9 @@
-from fastapi import APIRouter, status, HTTPException, Response
+from fastapi import APIRouter, status, HTTPException, Response, Depends
 
 from src.users.auth import get_password_hash, authenticate_user, create_jwt_token
 from src.users.dao import UserDAO
+from src.users.dependencies import get_current_user
+from src.users.models import User
 from src.users.shemas import SUser, SUserLogin
 
 router = APIRouter(prefix="/auth",
@@ -26,6 +28,16 @@ async def login_user(response: Response, user_data: SUserLogin):
     response.set_cookie("user_access_token", access_token, httponly=True)
 
     return {"message": "success"}
+
+
+@router.post("/logaut")
+async def logaut_user(response: Response):
+    response.delete_cookie("user_access_token")
+    return {"message": "Вы вышли из профиля"}
+
+@router.post("/me")
+async def read_users_me(user: User = Depends(get_current_user)):
+    return user
 
 
 @router.get("")
