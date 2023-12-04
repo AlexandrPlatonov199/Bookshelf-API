@@ -1,5 +1,6 @@
-from fastapi import APIRouter, status, HTTPException, Response, Depends
+from fastapi import APIRouter, Response, Depends
 
+from src.exceptoins import UserIsNotPresentException
 from src.users.auth import get_password_hash, authenticate_user, create_jwt_token
 from src.users.dao import UserDAO
 from src.users.dependencies import get_current_user
@@ -14,7 +15,7 @@ router = APIRouter(prefix="/auth",
 async def auth_register(user_data: SUser):
     query = await UserDAO.find_one_or_none(email=user_data.email)
     if query:
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Данный пользователь уже зарегистрирован")
+        raise UserIsNotPresentException
     hash_password = get_password_hash(user_data.password)
     await UserDAO.add(username=user_data.username,email=user_data.email,hash_password=hash_password)
 

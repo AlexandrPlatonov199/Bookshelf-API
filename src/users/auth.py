@@ -1,10 +1,10 @@
 from datetime import datetime, timedelta
-from fastapi import HTTPException, status
 from passlib.context import CryptContext
 from pydantic import EmailStr
 from jose import jwt
 
 from src.config import settings
+from src.exceptoins import IncorrectEmailOrPasswordException, UserIsNotPresentException
 from src.users.dao import UserDAO
 
 pwd_context = CryptContext(schemes=['bcrypt'], deprecated="auto")
@@ -29,7 +29,7 @@ def create_jwt_token(data: dict) -> str:
 async def authenticate_user(email: EmailStr, password):
     user = await UserDAO.find_one_or_none(email=email)
     if not user:
-        raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="Данный пользователь не зарегистрирован")
+        raise UserIsNotPresentException
     if not verify_password(password, user.hash_password):
-        raise HTTPException(status_code=status.HTTP_409_CONFLICT, detail="Неверно указан пароль")
+        raise IncorrectEmailOrPasswordException
     return user
