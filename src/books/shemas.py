@@ -4,6 +4,7 @@ from pydantic import BaseModel, Field
 class SBooks(BaseModel):
     author_id: int
     category_id: int
+    user_id: int
     name: str
     description: str
     year_publication: int

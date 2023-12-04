@@ -3,6 +3,7 @@ from sqladmin import ModelView
 from src.books.authors.models import Author
 from src.books.categorys.models import Category
 from src.books.models import Book
+from src.users.models import User
 
 
 class BookAdmin(ModelView, model=Book):
@@ -21,5 +22,11 @@ class AuthorAdmin(ModelView, model=Author):
     column_list = [Author.id, Author.first_name, Author.last_name, Author.create_date]
     name = "Автор"
     name_plural = "Авторы"
+
+
+class UserAdmin(ModelView, model=User):
+    column_list = [c.name for c in User.__table__.columns] + [User.books]
+    name = "Пользователь"
+    name_plural = "Пользователи"
 
 

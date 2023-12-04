@@ -8,6 +8,7 @@ from src.db import Base
 
 if TYPE_CHECKING:
     from src.books.categorys.models import Category
+    from src.users.models import User
 
 
 class Book(Base):
@@ -20,9 +21,11 @@ class Book(Base):
     cover_type: Mapped[str] = mapped_column(nullable=False)
     age_restrictions: Mapped[str] = mapped_column(nullable=False)
     create_date: Mapped[datetime] = mapped_column(default=datetime.utcnow)
-    author_id: Mapped[int] = mapped_column(ForeignKey("authors.id"),)
-    category_id: Mapped[int] = mapped_column(ForeignKey("categorys.id"), )
+    author_id: Mapped[int] = mapped_column(ForeignKey("authors.id"))
+    category_id: Mapped[int] = mapped_column(ForeignKey("categorys.id"))
+    user_id: Mapped[int] = mapped_column(ForeignKey("users.id"))
 
+    users: Mapped["User"] = relationship(back_populates="books")
     categorys: Mapped[list["Category"]] = relationship(back_populates="books")
 
     def __str__(self):
