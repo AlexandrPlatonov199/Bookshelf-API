@@ -26,6 +26,7 @@ class AuthorAdmin(ModelView, model=Author):
 
 class UserAdmin(ModelView, model=User):
     column_list = [c.name for c in User.__table__.columns] + [User.books]
+    can_delete = False
     name = "Пользователь"
     name_plural = "Пользователи"
 

@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from sqladmin import Admin
 
+from src.admin_panel.auth import authentication_backend
 from src.admin_panel.views import BookAdmin, CategoryAdmin, AuthorAdmin, UserAdmin
 from src.books.authors.routers import router as router_author
 from src.books.categorys.routers import router as router_category
@@ -21,7 +22,7 @@ app.include_router(router_book)
 app.include_router(router_category)
 app.include_router(router_user)
 
-admin = Admin(app, async_engine)
+admin = Admin(app, async_engine, authentication_backend=authentication_backend)
 
 admin.add_view(BookAdmin)
 admin.add_view(CategoryAdmin)
