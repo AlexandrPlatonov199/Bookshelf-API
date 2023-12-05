@@ -5,7 +5,6 @@ from src.books.dao import BookDAO
 from src.books.shemas import SBooks
 from src.users.dependencies import get_current_user
 from src.users.models import User
-from src.users.shemas import SUser
 
 router = APIRouter(prefix="/books",
                    tags=["Books"])
