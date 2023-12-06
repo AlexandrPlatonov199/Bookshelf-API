@@ -1,6 +1,8 @@
 import pytest
 from httpx import AsyncClient
 
+from src.users.dao import UserDAO
+
 
 @pytest.mark.parametrize("username, email, password, status_code", [
     ("gogo", "gogo@test.com", "gogo", 200),
@@ -27,3 +29,16 @@ async def test_login_user(email, password, status_code, ac):
     })
 
     assert result.status_code == status_code
+
+
+@pytest.mark.parametrize("email, exists", [
+    ("test@test.com", True),
+    (".....", False)
+])
+async def test_user_find_one_or_none(email, exists):
+    user = await UserDAO.find_one_or_none(email=email)
+
+    if exists:
+        assert user.email == email
+    else:
+        assert not user
