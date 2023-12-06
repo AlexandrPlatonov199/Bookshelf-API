@@ -1,3 +1,5 @@
+from contextlib import asynccontextmanager
+
 from fastapi import FastAPI
 from sqladmin import Admin
 
@@ -15,7 +17,8 @@ from fastapi_cache.backends.redis import RedisBackend
 
 from redis import asyncio as aioredis
 
-app = FastAPI(title="Bookshelf")
+app = FastAPI(title="Bookshelf",
+              lifespan="lifespan")
 
 app.include_router(router_author)
 app.include_router(router_book)
@@ -30,8 +33,9 @@ admin.add_view(AuthorAdmin)
 admin.add_view(UserAdmin)
 
 
-@app.on_event("startup")
-def startup():
+@asynccontextmanager
+async def lifespan(app: FastAPI):
     redis = aioredis.from_url(f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}", encoding="utf8",
                               decode_responses=True)
+    yield
     FastAPICache.init(RedisBackend(redis), prefix="cache")

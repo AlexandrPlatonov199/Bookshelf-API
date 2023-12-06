@@ -3,6 +3,8 @@ import json
 
 import pytest
 from sqlalchemy import insert
+from fastapi.testclient import TestClient
+from httpx import AsyncClient
 
 from src.books.authors.models import Author
 from src.books.categorys.models import Category
@@ -10,6 +12,7 @@ from src.books.models import Book
 from src.config import settings
 from src.db import async_engine, Base, async_sessionmaker
 from src.users.models import User
+from src.main import app as test_app
 
 
 @pytest.fixture(scope="session", autouse=True)
@@ -41,9 +44,22 @@ async def prepare_db():
         await session.commit()
 
 
+class CustomEventLoopPolicy(asyncio.DefaultEventLoopPolicy):
+    pass
+
+
 @pytest.fixture(scope="session")
-def event_loop(request):
-    """Create an instance of the default event loop for each test case."""
-    loop = asyncio.get_event_loop_policy().new_event_loop()
-    yield loop
-    loop.close()
+def event_loop_policy(request):
+    return CustomEventLoopPolicy()
+
+
+@pytest.fixture(scope="function")
+async def ac():
+    async with AsyncClient(app=test_app, base_url="http://test") as ac:
+        yield ac
+
+
+@pytest.fixture(scope="function")
+async def session():
+    async with async_sessionmaker() as session:
+        yield session

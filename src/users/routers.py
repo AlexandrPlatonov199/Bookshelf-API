@@ -11,7 +11,7 @@ router = APIRouter(prefix="/auth",
                    tags=["Auth"])
 
 
-@router.post("")
+@router.post("/register")
 async def auth_register(user_data: SUser):
     query = await UserDAO.find_one_or_none(email=user_data.email)
     if query:
