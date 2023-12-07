@@ -3,7 +3,6 @@ import json
 
 import pytest
 from sqlalchemy import insert
-from fastapi.testclient import TestClient
 from httpx import AsyncClient
 
 from src.books.authors.models import Author
@@ -60,6 +59,12 @@ async def ac():
 
 
 @pytest.fixture(scope="function")
-async def session():
-    async with async_sessionmaker() as session:
-        yield session
+async def authenticated_ac():
+    async with AsyncClient(app=test_app, base_url="http://test") as ace:
+        await ace.post("/auth/login", json={
+            "email": "test@test.com",
+            "password": "test"
+        })
+
+        assert ace.cookies["user_access_token"]
+        yield ace
