@@ -1,7 +1,8 @@
-from fastapi import APIRouter, Response, Depends
+from fastapi import APIRouter, Depends, Response
 
 from src.exceptoins import UserIsNotPresentException
-from src.users.auth import get_password_hash, authenticate_user, create_jwt_token
+from src.users.auth import (authenticate_user, create_jwt_token,
+                            get_password_hash)
 from src.users.dao import UserDAO
 from src.users.dependencies import get_current_user
 from src.users.models import User

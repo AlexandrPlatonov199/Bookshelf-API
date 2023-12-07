@@ -3,7 +3,6 @@ from fastapi import APIRouter
 from src.books.categorys.dao import CategoryDAO
 from src.books.categorys.shemas import SCategory
 
-
 router = APIRouter(prefix="/category",
                    tags=["Categorys"])
 

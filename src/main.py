@@ -1,21 +1,20 @@
 from contextlib import asynccontextmanager
 
 from fastapi import FastAPI
+from fastapi_cache import FastAPICache
+from fastapi_cache.backends.redis import RedisBackend
+from redis import asyncio as aioredis
 from sqladmin import Admin
 
 from src.admin_panel.auth import authentication_backend
-from src.admin_panel.views import BookAdmin, CategoryAdmin, AuthorAdmin, UserAdmin
+from src.admin_panel.views import (AuthorAdmin, BookAdmin, CategoryAdmin,
+                                   UserAdmin)
 from src.books.authors.routers import router as router_author
 from src.books.categorys.routers import router as router_category
 from src.books.routers import router as router_book
 from src.config import settings
-from src.users.routers import router as router_user
 from src.db import async_engine
-
-from fastapi_cache import FastAPICache
-from fastapi_cache.backends.redis import RedisBackend
-
-from redis import asyncio as aioredis
+from src.users.routers import router as router_user
 
 app = FastAPI(title="Bookshelf",
               lifespan="lifespan")

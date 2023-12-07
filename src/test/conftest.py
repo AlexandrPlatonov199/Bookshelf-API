@@ -2,16 +2,16 @@ import asyncio
 import json
 
 import pytest
-from sqlalchemy import insert
 from httpx import AsyncClient
+from sqlalchemy import insert
 
 from src.books.authors.models import Author
 from src.books.categorys.models import Category
 from src.books.models import Book
 from src.config import settings
-from src.db import async_engine, Base, async_sessionmaker
-from src.users.models import User
+from src.db import Base, async_engine, async_sessionmaker
 from src.main import app as test_app
+from src.users.models import User
 
 
 @pytest.fixture(scope="session", autouse=True)
