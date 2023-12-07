@@ -61,10 +61,9 @@ async def ac():
 @pytest.fixture(scope="function")
 async def authenticated_ac():
     async with AsyncClient(app=test_app, base_url="http://test") as ace:
-        await ace.post("/auth/login", json={
-            "email": "test@test.com",
-            "password": "test"
-        })
+        await ace.post(
+            "/auth/login", json={"email": "test@test.com", "password": "test"}
+        )
 
         assert ace.cookies["user_access_token"]
         yield ace
