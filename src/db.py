@@ -1,7 +1,6 @@
 from sqlalchemy import NullPool
 from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
-from sqlalchemy.orm import (DeclarativeBase, Mapped, declared_attr,
-                            mapped_column)
+from sqlalchemy.orm import DeclarativeBase, Mapped, declared_attr, mapped_column
 
 from src.config import settings
 
@@ -11,6 +10,8 @@ if settings.MODE == "TEST":
 else:
     DATABASE_URL = settings.DATABASE_URL
     DATABASE_PARAMS = {}
+
+
 class Base(DeclarativeBase):
     __abstract__ = True
 

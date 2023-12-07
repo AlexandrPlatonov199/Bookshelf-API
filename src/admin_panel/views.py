@@ -29,5 +29,3 @@ class UserAdmin(ModelView, model=User):
     can_delete = False
     name = "Пользователь"
     name_plural = "Пользователи"
-
-

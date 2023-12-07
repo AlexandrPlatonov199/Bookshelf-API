@@ -1,6 +1,5 @@
 from sqladmin.authentication import AuthenticationBackend
 from starlette.requests import Request
-from starlette.responses import RedirectResponse
 
 from src.users.auth import authenticate_user, create_jwt_token
 from src.users.dependencies import get_current_user

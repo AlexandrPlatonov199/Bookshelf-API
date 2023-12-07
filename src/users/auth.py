@@ -5,11 +5,10 @@ from passlib.context import CryptContext
 from pydantic import EmailStr
 
 from src.config import settings
-from src.exceptoins import (IncorrectEmailOrPasswordException,
-                            UserIsNotPresentException)
+from src.exceptoins import IncorrectEmailOrPasswordException, UserIsNotPresentException
 from src.users.dao import UserDAO
 
-pwd_context = CryptContext(schemes=['bcrypt'], deprecated="auto")
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 
 def get_password_hash(password: str) -> str:

@@ -3,8 +3,7 @@ from fastapi import APIRouter
 from src.books.authors.dao import AuthorDAO
 from src.books.authors.shemas import SAuthors
 
-router = APIRouter(prefix="/author",
-                   tags=["Authors"])
+router = APIRouter(prefix="/author", tags=["Authors"])
 
 
 @router.post("")

@@ -7,8 +7,7 @@ from redis import asyncio as aioredis
 from sqladmin import Admin
 
 from src.admin_panel.auth import authentication_backend
-from src.admin_panel.views import (AuthorAdmin, BookAdmin, CategoryAdmin,
-                                   UserAdmin)
+from src.admin_panel.views import AuthorAdmin, BookAdmin, CategoryAdmin, UserAdmin
 from src.books.authors.routers import router as router_author
 from src.books.categorys.routers import router as router_category
 from src.books.routers import router as router_book
@@ -16,8 +15,7 @@ from src.config import settings
 from src.db import async_engine
 from src.users.routers import router as router_user
 
-app = FastAPI(title="Bookshelf",
-              lifespan="lifespan")
+app = FastAPI(title="Bookshelf", lifespan="lifespan")
 
 app.include_router(router_author)
 app.include_router(router_book)
@@ -34,7 +32,10 @@ admin.add_view(UserAdmin)
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    redis = aioredis.from_url(f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}", encoding="utf8",
-                              decode_responses=True)
+    redis = aioredis.from_url(
+        f"redis://{settings.REDIS_HOST}:{settings.REDIS_PORT}",
+        encoding="utf8",
+        decode_responses=True,
+    )
     yield
     FastAPICache.init(RedisBackend(redis), prefix="cache")
