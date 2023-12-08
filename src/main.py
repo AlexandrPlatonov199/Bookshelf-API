@@ -7,6 +7,7 @@ from fastapi_cache.backends.redis import RedisBackend
 from redis import asyncio as aioredis
 from sqladmin import Admin
 import time
+from fastapi_versioning import VersionedFastAPI
 
 from src.admin_panel.auth import authentication_backend
 from src.admin_panel.views import AuthorAdmin, BookAdmin, CategoryAdmin, UserAdmin
@@ -43,13 +44,6 @@ app.include_router(router_book)
 app.include_router(router_category)
 app.include_router(router_user)
 
-admin = Admin(app, async_engine, authentication_backend=authentication_backend)
-
-admin.add_view(BookAdmin)
-admin.add_view(CategoryAdmin)
-admin.add_view(AuthorAdmin)
-admin.add_view(UserAdmin)
-
 
 @app.middleware("http")
 async def add_process_time_header(request: Request, call_next):
@@ -60,3 +54,16 @@ async def add_process_time_header(request: Request, call_next):
         "process_time": round(process_time, 4)
     })
     return response
+
+
+app = VersionedFastAPI(app,
+    version_format='{major}',
+    prefix_format='/v{major}')
+
+
+admin = Admin(app, async_engine, authentication_backend=authentication_backend)
+
+admin.add_view(BookAdmin)
+admin.add_view(CategoryAdmin)
+admin.add_view(AuthorAdmin)
+admin.add_view(UserAdmin)
