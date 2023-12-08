@@ -8,6 +8,7 @@ load_dotenv(find_dotenv(".env"))
 
 class Settings(BaseSettings):
     MODE: Literal["DEV", "TEST", "PROD"]
+    LOG_LEVEL: str
 
     DB_USER: str
     DB_PASS: str
