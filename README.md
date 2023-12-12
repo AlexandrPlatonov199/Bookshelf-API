@@ -51,32 +51,32 @@ docker compose up
 - [Проверить prometheus](http://127.0.0.1:9090/targets?search=)
 
 <p align="center">
-  <img src="C:\Users\Alexandr\Desktop\Bookshelf API\static\prometheus.png" align="center"/>
+  <img src="static\prometheus.png" align="center"/>
 </p>
 
 - Зайти на [Grafana](http://127.0.0.1:3000) вести admin/ admin
 
 <p align="center">
-  <img src="C:\Users\Alexandr\Desktop\Bookshelf API\static\grafana_login.png" align="center"/>
+  <img src="static\grafana_login.png" align="center"/>
 </p>
 
 - Перейти во [вкладку](http://127.0.0.1:3000/datasources/new) и выбрать Prometheus
 
 <p align="center">
-  <img src="C:\Users\Alexandr\Desktop\Bookshelf API\static\prometheus_sourse.png" align="center"/>
+  <img src="static\prometheus_sourse.png" align="center"/>
 </p>
 
 - Указать URL prometheus и сохранить настройки
 
 <p align="center">
-  <img src="C:\Users\Alexandr\Desktop\Bookshelf API\static\prometheus_url.png" align="center"/>
+  <img src="static\prometheus_url.png" align="center"/>
 </p>
 
 - [Перейти на ссылку](http://127.0.0.1:3000/dashboard/import) и в Import via panel json 
 вставить данные из файла grafana-dashboard.json и нажать кнопку load
 
 <p align="center">
-  <img src="C:\Users\Alexandr\Desktop\Bookshelf API\static\load.png" align="center"/>
+  <img src="static\load.png" align="center"/>
 </p>
 
 - Сделать [запросы выполняемые сервисом](http://127.0.0.1:7777/v1/docs)
