@@ -54,13 +54,13 @@ def event_loop_policy(request):
 
 @pytest.fixture(scope="function")
 async def ac():
-    async with AsyncClient(app=test_app, base_url="http://test") as ac:
+    async with AsyncClient(app=test_app, base_url="http://test/v1") as ac:
         yield ac
 
 
 @pytest.fixture(scope="function")
 async def authenticated_ac():
-    async with AsyncClient(app=test_app, base_url="http://test") as ace:
+    async with AsyncClient(app=test_app, base_url="http://test/v1") as ace:
         await ace.post(
             "/auth/login", json={"email": "test@test.com", "password": "test"}
         )
