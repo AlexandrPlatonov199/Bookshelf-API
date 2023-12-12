@@ -8,6 +8,7 @@ from redis import asyncio as aioredis
 from sqladmin import Admin
 import time
 from fastapi_versioning import VersionedFastAPI
+from prometheus_fastapi_instrumentator import Instrumentator
 
 from src.admin_panel.auth import authentication_backend
 from src.admin_panel.views import AuthorAdmin, BookAdmin, CategoryAdmin, UserAdmin
@@ -17,14 +18,15 @@ from src.books.routers import router as router_book
 from src.config import settings
 from src.db import async_engine
 from src.logger import logger
+from src.prometheus.routers import router as router_prometheus
 from src.users.routers import router as router_user
 
-
-sentry_sdk.init(
-    dsn="https://53e3a1594151c2f94cc637f2f8d5cd7f@o4506359447355392.ingest.sentry.io/4506359449255936",
-    traces_sample_rate=1.0,
-    profiles_sample_rate=1.0,
-)
+if settings.MODE == "TEST":
+    sentry_sdk.init(
+        dsn="https://53e3a1594151c2f94cc637f2f8d5cd7f@o4506359447355392.ingest.sentry.io/4506359449255936",
+        traces_sample_rate=1.0,
+        profiles_sample_rate=1.0,
+    )
 
 
 @asynccontextmanager
@@ -43,6 +45,7 @@ app.include_router(router_author)
 app.include_router(router_book)
 app.include_router(router_category)
 app.include_router(router_user)
+app.include_router(router_prometheus)
 
 
 @app.middleware("http")
@@ -59,6 +62,12 @@ async def add_process_time_header(request: Request, call_next):
 app = VersionedFastAPI(app,
     version_format='{major}',
     prefix_format='/v{major}')
+
+instrumentator = Instrumentator(
+    should_group_status_codes=False,
+    excluded_handlers=[".*admin.*", "/metrics"],
+)
+instrumentator.instrument(app).expose(app)
 
 
 admin = Admin(app, async_engine, authentication_backend=authentication_backend)
