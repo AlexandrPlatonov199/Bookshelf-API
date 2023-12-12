@@ -36,21 +36,3 @@ class IncorrectTokenFormatException(BookingException):
 
 class UserIsNotPresentException(BookingException):
     status_code = status.HTTP_401_UNAUTHORIZED
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
