@@ -1,0 +1,7 @@
+*.pyc
+.env
+.idea
+.venv
+__pycache__
+database_data
+pyrightconfig.json
