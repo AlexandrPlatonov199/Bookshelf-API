@@ -1,8 +1,8 @@
 import fastapi
-from . import v1beta
+from . import rest
 
 
 router = fastapi.APIRouter()
 
-router.include_router(v1beta.router, prefix="/v1beta")
+router.include_router(rest.router, prefix="/rest")
 
