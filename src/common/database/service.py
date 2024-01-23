@@ -7,9 +7,9 @@ from sqlalchemy.ext.asyncio import async_sessionmaker, create_async_engine
 
 
 class BaseDatabaseService(ServiceMixin):
-    def __init__(self, dns: str):
-        self._dns = dns
-        self._engine = create_async_engine(self._dns)
+    def __init__(self, dsn: str):
+        self._dsn = dsn
+        self._engine = create_async_engine(self._dsn, pool_recycle=60)
         self._sessionmaker = async_sessionmaker(self._engine, expire_on_commit=False)
 
     def get_alembic_config_path(self) -> pathlib.Path:
@@ -20,7 +20,7 @@ class BaseDatabaseService(ServiceMixin):
 
         config = AlembicConfig()
         config.set_main_option("script_location", str(migrations_path))
-        config.set_main_option("sqlalchemy.url", self._dns)
+        config.set_main_option("sqlalchemy.url", self._dsn.replace("%", "%%"))
 
         return config
 

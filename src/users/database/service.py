@@ -61,4 +61,4 @@ class UsersDatabaseService(BaseDatabaseService):
 
 
 def get_service(settings: UsersSettings) -> UsersDatabaseService:
-    return UsersDatabaseService(dns=str(settings.db_dns))
+    return UsersDatabaseService(dsn=str(settings.db_dsn))

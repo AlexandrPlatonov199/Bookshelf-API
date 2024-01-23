@@ -1,13 +1,25 @@
-FROM python:3.11
+# Install requirements
+FROM python:3.11-slim as core
 
-RUN mkdir /bookshelf
+WORKDIR /app
 
-WORKDIR /bookshelf
+RUN pip install poetry==1.6.1
+COPY ./poetry.lock /app/poetry.lock
+COPY ./pyproject.toml /app/pyproject.toml
 
-COPY requirements.txt .
+# All requirements
+FROM core as full
 
-RUN pip install -r requirements.txt
+RUN poetry install --with dev --all-extras
+COPY ./src /app/src
 
-COPY . .
+ENTRYPOINT ["poetry", "run"]
 
-RUN chmod a+x /bookshelf/docker/*.sh
+# Only application
+FROM core as slim
+
+RUN apt update -y && apt install -y curl
+
+RUN poetry install --only main --all-extras
+COPY ./src /app/src
+ENTRYPOINT ["poetry", "run", "python", "-m", "src"]
