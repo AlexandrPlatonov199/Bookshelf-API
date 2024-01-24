@@ -1,0 +1,8 @@
+*.pyc
+.env.example
+.idea
+.venv
+*.sqlite3
+__pycache__
+database_data
+pyrightconfig.json

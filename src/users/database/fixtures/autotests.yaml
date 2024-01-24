@@ -1,0 +1,6 @@
+model: users
+data:
+- id: 03fe07b9-109c-4e11-a2a5-184921fbfc49
+  email: sasa20sasha19910@yandex.ru
+  first_name: Alex
+  last_name: Platon
