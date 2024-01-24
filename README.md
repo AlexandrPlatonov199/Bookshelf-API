@@ -1,80 +1,50 @@
-# «API Сервис книжного магазина».
+# Bookshelf Backend
 
-## Описание
-Bookshelf API - это мощный веб-сервис, разработанный с использованием передовых технологий, таких как FastAPI, SQLAlchemy и многих других. Этот API предоставляет удобные и эффективные методы управления библиотекой книг, обеспечивая высокую производительность и надежность.
-# Основные функции:
-- Управление книгами: Bookshelf API позволяет добавлять, редактировать и удалять книги из вашей коллекции, предоставляя полный контроль над содержимым вашей библиотеки.
-- Кэширование данных: Используя fastapi-cache2 и Redis, API обеспечивает быстрый доступ к данным, оптимизируя производительность при работе с часто запрашиваемыми ресурсами.
-- Версионирование API: С помощью fastapi-versioning вы можете управлять версиями API, обеспечивая совместимость и гибкость при внесении изменений в функциональность.
-- Мониторинг производительности: Интеграция с prometheus-fastapi-instrumentator позволяет отслеживать производительность API, собирая метрики и данные для мониторинга.
-- Тестирование и поддержка кода: Инструменты pytest, black, flake8, и isort обеспечивают высокое качество кода, тестирование функциональности и обеспечивают соблюдение стандартов оформления.
-Стек: FastAPI, fastapi-cache2, fastapi-versioning, SQLAlchemy, sqladmin, pytest, alembic, prometheus-fastapi-instrumentator, black, flake8, isort, Redis.
+## Requirements
 
-## Список сделанного:
-- [x] Реализовать проект на основе асинхронного подхода
-- [x] Реализовать миграции с помощью alembic
-- [x] Создать образец relationship "многие ко многим"
-- [x] Добавить слой который будет обрабатывать sqlalchemy запросы
-- [x] Добавить admin-panel(sqladmin)
-- [x] Добавить Аутентификация JWT / Авторизация
-- [x] Добавить кастомные ошибки
-- [x] Добавьте конфигурацию кэша с помощью fastapi-cache2 и redis
-- [x] Добавьте тестирование unit и integrations c помощью pytest
-- [x] Добавить стилизацию кода при помощи black, flake8, isort
-- [x] Добавить loger при помощи python json logger
-- [x] Добавить возможность отлавливать ошибки в коде при помощи Sentry
-- [x] Добавить версионирование API c помощью fastapi-versioning
-- [x] Добавить контейнеризацию Docker
-- [x] Добавить мониторинг с помощью Grafana + Prometheus
+### Requirements: Docker
 
+For running or testing all services you can use `Docker`. You can see instructions for installation
+[here](https://docs.docker.com/engine/install/).
 
-## Порядок запуска проекта
-
-1. Клонировать проект на локальный компьютер
-```sh
-git clone https://github.com/AlexandrPlatonov199/Bookshelf-API.git
-```
-2. Заполнить файлы .env и .env-non-dev своими данными
-3. Запустить проект командой:
-```sh
-docker compose build
-```
-```sh
-docker compose up
+After installation you should init `swarm`
+```shell
+docker swarm init 
 ```
 
-4. Для отображения API проекта и выполнения запросов перейти к [примерам запросов выполняемых сервисом](http://127.0.0.1:7777/v1/docs).
+### Requirements: Python
 
-5. Для оценки выполняемых запросов:
-- [Проверить prometheus](http://127.0.0.1:9090/targets?search=)
+For running or testing all services you can use `Python` environment. You can install Python on
+your local machine directly (see [here](https://www.python.org/downloads/)) or use any wrappers
+(`venv`, `pyenv`, `pipenv`, etc.).
 
-<p align="center">
-  <img src="static\prometheus.png" align="center"/>
-</p>
+**Python version: `3.11` or higher**
 
-- Зайти на [Grafana](http://127.0.0.1:3000) вести admin/ admin
+After installation Python you need install `poetry` (v1.6.1):
+```shell
+pip install poetry==1.6.1
+```
+And install all Python requirements:
+```shell
+poetry install --all-extras
+```
 
-<p align="center">
-  <img src="static\grafana_login.png" align="center"/>
-</p>
+## Test
 
-- Перейти во [вкладку](http://127.0.0.1:3000/datasources/new) и выбрать Prometheus
+### Test: Docker
 
-<p align="center">
-  <img src="static\prometheus_sourse.png" align="center"/>
-</p>
+For testing you should build full image
 
-- Указать URL prometheus и сохранить настройки
+```shell
+docker build -t bookshelf --target full . 
+```
 
-<p align="center">
-  <img src="static\prometheus_url.png" align="center"/>
-</p>
+**Unit tests**
+```shell
+docker run bookshelf pytest /app/tests
+```
 
-- [Перейти на ссылку](http://127.0.0.1:3000/dashboard/import) и в Import via panel json 
-вставить данные из файла grafana-dashboard.json и нажать кнопку load
+### Run: Python
 
-<p align="center">
-  <img src="static\load.png" align="center"/>
-</p>
-
-- Сделать [запросы выполняемые сервисом](http://127.0.0.1:7777/v1/docs)
+For running separate services, please, see documentation:
+1. [Users](src/users/README.md)

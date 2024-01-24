@@ -4,6 +4,7 @@ services:
     image: postgres:16.0-bookworm
     secrets:
       - postgresql_password
+    user: 0:0
     environment:
       POSTGRES_PASSWORD_FILE: /run/secrets/postgresql_password
     volumes:
@@ -22,12 +23,18 @@ services:
       ROOT_URL: ${USERS_ROOT_URL:-http://localhost:3000}
       ROOT_PATH: ${USERS_ROOT_PATH}
       ALLOWED_ORIGINS: ${USERS_ALLOWED_ORIGINS:-["http://localhost:3050"]}
+    volumes:
+      - ${USERS_MEDIA_DIR_PATH:-./users_data/media}:/media
     command: [ "users", "api", "run" ]
+    healthcheck:
+      test: curl --fail http://localhost:8000/health
     ports:
       - target: 8000
         published: ${USERS_PORT:-3000}
         mode: host
     deploy:
+      update_config:
+        order: start-first
       replicas: 1
 
 #  users:

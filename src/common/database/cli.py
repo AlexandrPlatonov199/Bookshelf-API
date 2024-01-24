@@ -2,6 +2,10 @@ import asyncio
 from typing import Optional
 
 import typer
+from rich.console import Console
+from rich.table import Table
+
+from src.common.database.service import FixtureFormatEnum
 
 from .service import BaseDatabaseService
 
@@ -50,5 +54,43 @@ def get_migrations_cli() -> typer.Typer:
     cli.command(name="rollback")(migrations_rollback)
     cli.command(name="create")(migrations_create)
     cli.command(name="list")(migrations_list)
+
+    return cli
+
+
+def fixtures_list(ctx: typer.Context):
+    database_service = ctx.obj["database"]
+
+    fixtures = database_service.get_fixtures()
+
+    table = Table("Name", "Format")
+    for fixture in fixtures:
+        table.add_row(fixture.name, fixture.format.value)
+    Console().print(table)
+
+
+def fixtures_apply(
+    ctx: typer.Context,
+    names: list[str] = typer.Argument(..., help="Fixtures names"),
+    fixture_format: FixtureFormatEnum = typer.Option(
+        FixtureFormatEnum.YAML,
+        "-f", "--format",
+        help="Fixture format/extension",
+    ),
+):
+    database_service = ctx.obj["database"]
+
+    loop = asyncio.get_event_loop()
+    for name in names:
+        loop.run_until_complete(database_service.apply_fixture(
+            name=name,
+            fixture_format=fixture_format,
+        ))
+
+
+def get_fixtures_cli() -> typer.Typer:
+    cli = typer.Typer()
+    cli.command(name="list")(fixtures_list)
+    cli.command(name="apply")(fixtures_apply)
 
     return cli

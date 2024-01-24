@@ -12,7 +12,7 @@ FROM core as full
 
 RUN poetry install --with dev --all-extras
 COPY ./src /app/src
-
+COPY ./tests /app/tests
 ENTRYPOINT ["poetry", "run"]
 
 # Only application

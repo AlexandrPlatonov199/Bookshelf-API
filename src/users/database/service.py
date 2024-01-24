@@ -17,6 +17,12 @@ class UsersDatabaseService(BaseDatabaseService):
     def get_alembic_config_path(self) -> pathlib.Path:
         return pathlib.Path(__file__).parent / "migrations"
 
+    def get_fixtures_directory_path(self) -> pathlib.Path:
+        return pathlib.Path(__file__).parent / "fixtures"
+
+    def get_models(self) -> list[Type[Base]]:
+        return [User]
+
     @asynccontextmanager
     async def transaction(self):
         async with self._sessionmaker() as session:

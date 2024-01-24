@@ -8,7 +8,7 @@ from src.common.database.settings import BaseDatabaseSettings
 
 
 class UsersSettings(BaseAPISettings, BaseDatabaseSettings):
-    # model_config = SettingsConfigDict(env_file=".env", extra="allow", secrets_dir="/run/secrets")
+    model_config = SettingsConfigDict(env_file=".env", extra="allow", secrets_dir="/run/secrets")
 
     db_dsn: AnyUrl = AnyUrl("sqlite+aiosqlite:///users.sqlite3")
 
