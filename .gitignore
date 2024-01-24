@@ -1,8 +1,9 @@
-*.pyc
-.env.example
+*.db
+*.sqlite3
+.env
 .idea
 .venv
-*.sqlite3
+.vscode
 __pycache__
 database_data
-pyrightconfig.json
+users_data
